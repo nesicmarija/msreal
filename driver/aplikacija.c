@@ -60,7 +60,7 @@ int main()
                       fprintf(fp, "string=%s/n", string);
                       ffclose();
                       break;
-            case '3': puts("Unesi string koji treba da se konkatanira");
+        /*    case '3': puts("Unesi string koji treba da se konkatanira");
                       scanf("%s",string);
                       ffopen();
                       fprintf(fp, "append=%s/n", string);
@@ -87,6 +87,7 @@ int main()
                       fprintf(fp, "truncate=%d/n", i);
                       ffclose();
                       break;
+					  */
             case 'Q': puts("Game over");
                         exit(0);
                         break;
