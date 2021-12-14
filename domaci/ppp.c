@@ -132,6 +132,8 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			
 		}
     }
+	
+	return length;
 }
 
 static int __init stred_init(void)
