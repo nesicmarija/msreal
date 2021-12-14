@@ -56,6 +56,7 @@ ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_
 	
 {
 	int ret;
+	long int len=0;
 	char buff[BUFF_SIZE];
 	if (endRead){
 		pos=0;
@@ -116,7 +117,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	
 		
 	if(length<110)
-        {
+    {
 
                                                       //upis stringa 
                                                         //strcmp — Compare two strings 
@@ -137,7 +138,8 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 				stred[j]=0;
 			
 		}
-
+    }
+}
 
 static int __init stred_init(void)
 {
@@ -145,9 +147,8 @@ static int __init stred_init(void)
 	int i=0;
                             
 	//Initialize array
-	//for (i=0; i<100; i++)
-	//	stred[i] = 0;
-	//sema_init(&sem,1);
+	for (i=0; i<100; i++) stred[i] = 0;
+	
 
    ret = alloc_chrdev_region(&my_dev_id, 0, 1, "stred");
    if (ret){
