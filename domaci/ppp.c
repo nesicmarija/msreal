@@ -62,17 +62,13 @@ ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_
 		pos=0;
 		endRead = 0;
 		return 0;
-	
-	//printk(KERN_INFO "Pre reda\n");
-                 }
+	            }
 
 	strcpy(buff, stred);     
-	//printk(KERN_INFO "Kopirao sam\n");
+	
 	ret = copy_to_user(buffer, stred, strlen(stred));
-	//printk(KERN_INFO "IZBACIO SAM\n");
 	if(ret)
 	{
-		//printk(KERN_WARNING "Nisam izbacio\n");
 		return -EFAULT;
 	}
 	printk(KERN_WARNING "Succesfully read\n");
@@ -104,11 +100,8 @@ ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_
 ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length, loff_t *offset) 
 {
 	char buff[BUFF_SIZE];
-	char *pok;
-	int value;
 	int ret;
 	int j=0;
-	char *poklapanje;
 
 	ret = copy_from_user(buff, buffer, length);
 	if(ret)
