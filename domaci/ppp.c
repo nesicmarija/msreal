@@ -52,7 +52,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	char buff[BUFF_SIZE];
 	int ret;
 	int j=0;
-	int position, value;
+	int position, value, rem;
 
 	ret = copy_from_user(buff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
 	if(ret)
@@ -69,7 +69,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			printk(KERN_WARNING "Succesfully wrote string\n");
 		}
                                                                          //clear
-		else if(strcmp(buff,"clear")==0)
+		else if(strcmp(buff,"clear", 6)==0)
 		{
 			printk(KERN_WARNING "Deleting string\n");
 			for(j=0; j<100; j++)
@@ -83,12 +83,8 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			printk(KERN_WARNING "Succesfully concatenated strings\n");
 		}
 		
-		else if(strcmp(buff, "shrink")==0)
-		{
-			
-		}
 		
-		else if(strcmp(buff, "truncate=")==0)
+		else if(strcmp(buff, "truncate=", 9)==0)
 		{
 			ret=sscanf(buff, "%d,%d", &value,&position);
 			if(ret==2)
@@ -104,13 +100,52 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			}
 		}
 		
-		else if(strcmp(buff, "remove=")==0
+		else if(strcmp(buff, "remove=", 7)==0
 		{
+			int valuee, positionn,dezi, duzinaa;
 			puts("Koji string hoces da obrises?");
+			//uporedim
+			ret = copy_from_user(bufff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
+	        if(ret)
+		    return -EFAULT;
+	
+	        bufff[length-1] = '\0'; 
 			
+			char *pch;
+			while ((pch = strstr(stred, bufff)!='/0');
+		    {
+				if(pch!=NULL)
+				{
+					*pch='/0';
+                     strcat(stred, pch+strelen(bufff);	
+                     printk(KERN_INFO "Deleted"); 					
+				}
+	/*		  if(pch != NULL)
+			  {
+		        memmove(pch+strlen(bufff), pch, strlen(buff));
+				ret=sscanf(bufff, "%d,%d", &valuee,&positionn);
+			    if(ret==2)
+			  {
+			    duzinaa=strlen(stred);
+			    duzi=duzinaa-(strlen(buff)+1);
+			    if(position>duzi)
+			    {
+				  stred[strlen(stred)-valuee]='/0';
+				  printk(KERN_INFO "Deleted"); 
+			    }
+			  
+			   }
+			  }
+				
 			
+			}
+			*/
 		}
 	}
+	
+	else 
+		 printk(KERN_WARNING "The string should not have more than 100 characters");
+
 	
 	return length;
 }
