@@ -9,7 +9,6 @@
 #include <linux/uaccess.h>
 #include <linux/errno.h>
 #include <linux/device.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #define BUFF_SIZE 200
