@@ -50,6 +50,50 @@ int ppp_close(struct inode *pinode, struct file *pfile)
 		return 0;
 }
 
+ssize_t ppp_read(struct file *pfile, char __user *buffer, size_t length, loff_t *offset)
+	
+{
+	int ret;
+	int pos;
+	char buff[BUFF_SIZE];
+	long int len=0;
+	if (endRead){
+         endRead = 0;   //signalizira da se doslo do krajnjeg elementa
+		pos = 0;                //pokazuje element na koji se treba vratiti u trenutnom pozivu cat komande
+		//printk(KERN_INFO ​"Succesfully read from file\n"​);
+		return 0;
+    }
+	
+ 
+	strcpy(buff, ppp);     //kopira ppp u buff
+	ret = copy_to_user(buffer, ppp, strlen(ppp));  //niz ppp se kopira u niz buffer 
+	if(ret)                                            //strlen racuna duzinu stringa
+	{
+		return -EFAULT;
+	}
+	printk(KERN_WARNING "Succesfully read\n");
+	endRead=1;
+    	for(pos=0; pos<100; pos++)
+		{
+			len = scnprintf(buff, BUFF_SIZE, "%c ", ppp[pos]);
+			ret = copy_to_user(buffer, buff,len);
+			if(ret)
+				return -EFAULT;
+		}
+		if(pos==100)
+		{
+		//	printk(KERN_INFO ​"Succesfully read from file\n"​);
+			endRead = 1;
+		
+		}
+	    else
+	    {
+			printk(KERN_WARNING "Lifo is empty\n"); 
+	    }
+
+	  return strlen(ppp);
+}
+
 
 ssize_t ppp_write(struct file *pfile, const char __user *buffer, size_t length, loff_t *offset) 
 {
@@ -159,49 +203,6 @@ ssize_t ppp_write(struct file *pfile, const char __user *buffer, size_t length, 
 
 }
 
-ssize_t ppp_read(struct file *pfile, char __user *buffer, size_t length, loff_t *offset)
-	
-{
-	int ret;
-	int pos;
-	char buff[BUFF_SIZE];
-	long int len=0;
-	if (endRead){
-         endRead = 0;   //signalizira da se doslo do krajnjeg elementa
-		pos = 0;                //pokazuje element na koji se treba vratiti u trenutnom pozivu cat komande
-		//printk(KERN_INFO ​"Succesfully read from file\n"​);
-		return 0;
-    }
-	
- 
-	strcpy(buff, ppp);     //kopira ppp u buff
-	ret = copy_to_user(buffer, ppp, strlen(ppp));  //niz ppp se kopira u niz buffer 
-	if(ret)                                            //strlen racuna duzinu stringa
-	{
-		return -EFAULT;
-	}
-	printk(KERN_WARNING "Succesfully read\n");
-	endRead=1;
-    	for(pos=0; pos<100; pos++)
-		{
-			len = scnprintf(buff, BUFF_SIZE, "%c ", ppp[pos]);
-			ret = copy_to_user(buffer, buff,len);
-			if(ret)
-				return -EFAULT;
-		}
-		if(pos==100)
-		{
-		//	printk(KERN_INFO ​"Succesfully read from file\n"​);
-			endRead = 1;
-		
-		}
-	    else
-	    {
-			printk(KERN_WARNING "Lifo is empty\n"); 
-	    }
-
-	  return strlen(ppp);
-}
 
 
 static int __init ppp_init(void)
