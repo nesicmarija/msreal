@@ -123,7 +123,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 				if(pch!=NULL)
 				{
 					*pch='/0';
-                     strcat(stred, pch+strelen(bufff));	
+                     strcat(stred, pch+strlen(bufff));	
                      printk(KERN_INFO "Deleted"); 					
 				}
 			}
