@@ -17,6 +17,7 @@ dev_t my_dev_id;
 static struct class *my_class;
 static struct device *my_device;
 static struct cdev *my_cdev;
+char stred[100];
 
 
 int stred_open(struct inode *pinode, struct file *pfile);
@@ -53,6 +54,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	int ret;
 	int j=0;
 	int position, value, rem;
+	int duzina, duz;
 
 	ret = copy_from_user(buff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
 	if(ret)
@@ -63,13 +65,13 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 		
     if(length<110)
     {                               //upis stringa  //strcmp — Compare two strings  //int strcmp (	const char * cs, const char * ct);
-        if(strncmp(buff, "string=", 7)==0)   //poredi dva stringa za 7 karaktera (max broj karaktera) 
+        if(strncmp(buff, "string=")==0)   //poredi dva stringa za 7 karaktera (max broj karaktera) 
 		{                                     //ako je to ispisano, kopiraj string                          
 			strcpy(stred, (buff+7));                 //iz kernela u stred
 			printk(KERN_WARNING "Succesfully wrote string\n");
 		}
                                                                          //clear
-		else if(strcmp(buff,"clear", 6)==0)
+		else if(strcmp(buff,"clear")==0)
 		{
 			printk(KERN_WARNING "Deleting string\n");
 			for(j=0; j<100; j++)
@@ -84,7 +86,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 		}
 		
 		
-		else if(strcmp(buff, "truncate=", 9)==0)
+		else if(strcmp(buff, "truncate=")==0)
 		{
 			ret=sscanf(buff, "%d,%d", &value,&position);
 			if(ret==2)
@@ -100,7 +102,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			}
 		}
 		
-		else if(strcmp(buff, "remove=", 7)==0
+		else if(strcmp(buff, "remove="))==0
 		{
 			int valuee, positionn,dezi, duzinaa;
 			puts("Koji string hoces da obrises?");
@@ -159,7 +161,7 @@ ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_
 	if (endRead){
 		endRead = 0;            //signalizira da se doslo do krajnjeg elementa
 		pos = 0;                //pokazuje element na koji se treba vratiti u trenutnom pozivu cat komande
-		printk(KERN_INFO ​"Succesfully read from file\n"​);
+		//printk(KERN_INFO ​"Succesfully read from file\n"​);
 		return 0;
     }
 	
