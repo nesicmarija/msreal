@@ -118,7 +118,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	        bufff[length-1] = '\0'; 
 			
 			char *pch;
-			while ((pch = strstr(stred, bufff)!='/0');
+			while (pch = strstr(stred, bufff)!='/0');
 		    {
 				if(pch!=NULL)
 				{
@@ -126,6 +126,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
                      strcat(stred, pch+strelen(bufff));	
                      printk(KERN_INFO "Deleted"); 					
 				}
+			}
 	/*		  if(pch != NULL)
 			  {
 		        memmove(pch+strlen(bufff), pch, strlen(buff));
@@ -146,15 +147,14 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			
 			}
 			*/
-		}
-	}
+	    } 
 	
 	else 
 		 printk(KERN_WARNING "The string should not have more than 100 characters");
 
 
 	return length;
-}
+   }
 
 }
 
