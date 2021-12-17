@@ -57,7 +57,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	char bufff[100];
 	int ret;
 	int j=0;
-	int position;
+	int position, value;
 	int duzina, duz;
 	char str1[90];
 
@@ -100,7 +100,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			  duz=duzina-6;
 			  if(position>duz)
 			  {
-				  stred[strlen(stred)-value]='/0';
+				  stred[strlen(stred)-value]='\0';
 				  printk(KERN_INFO "Succesfully deleted 5 end characters"); 
 			  }
 			  
