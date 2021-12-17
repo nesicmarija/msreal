@@ -57,8 +57,8 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	char bufff[100];
 	int ret;
 	int j=0;
-	//int position, value, rem;
-	//int duzina, duz;
+	int position;
+	int duzina, duz;
 	char str1[90];
 
 	ret = copy_from_user(buff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
@@ -109,7 +109,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 		
 		else if(strcmp(buff, "remove=")==0)
 		{
-			int valuee, positionn,dezi, duzinaa;
+			//int valuee, positionn,dezi, duzinaa;
 			printk(KERN_INFO "Koji string zelis da obrises?\n");
 			//uporedim
 			ret = copy_from_user(bufff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
@@ -119,7 +119,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	        bufff[length-1] = '\0'; 
 			
 			char *pch;
-			while (pch = strstr(stred, bufff)!='\0');
+			while (pch = strstr(stred, bufff));
 		    {
 				if(pch!=NULL)
 				{
