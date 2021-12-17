@@ -19,8 +19,6 @@ static struct device *my_device;
 static struct cdev *my_cdev;
 
 
-struct fasync_struct *async_queue;
-
 char stred[100];
 int pos = 0;
 int endRead = 0;
@@ -62,7 +60,7 @@ ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_
 		pos=0;
 		endRead = 0;
 		return 0;
-	            }
+    }
 
 	strcpy(buff, stred);     
 	
@@ -131,6 +129,8 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 				stred[j]=0;
 			
 		}
+		
+		
     }
 	
 	return length;
