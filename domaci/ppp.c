@@ -148,13 +148,13 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			}
 			*/
 	    } 
-	
+}
 	else 
 		 printk(KERN_WARNING "The string should not have more than 100 characters");
 
 
 	return length;
-   }
+   
 
 }
 
