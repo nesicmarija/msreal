@@ -60,7 +60,7 @@ int main()
                       fprintf(fp, "string=%s/n", string);
                       ffclose();
                       break;
-        /*    case '3': puts("Unesi string koji treba da se konkatanira");
+            case '3': puts("Unesi string koji treba da se konkatanira");
                       scanf("%s",string);
                       ffopen();
                       fprintf(fp, "append=%s/n", string);
@@ -70,10 +70,10 @@ int main()
                       fprintf(fp, "clear/n");
                       ffclose();
                       break;
-            case '5': ffopen();
+          /*  case '5': ffopen();
                       fprintf(fp, "shrink/n");
                       ffclose();
-                      break;
+            */          break;
             case '6': puts("Unesi string koji treba da se ukloni");
                       scanf("%s",string);
                       ffopen();
