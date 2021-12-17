@@ -9,6 +9,9 @@
 #include <linux/uaccess.h>
 #include <linux/errno.h>
 #include <linux/device.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #define BUFF_SIZE 200
 
 MODULE_LICENSE("Dual BSD/GPL");
@@ -52,6 +55,7 @@ int stred_close(struct inode *pinode, struct file *pfile)
 ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length, loff_t *offset) 
 {
 	char buff[BUFF_SIZE];
+	char bufff[100];
 	int ret;
 	int j=0;
 	int position, value, rem;
@@ -121,7 +125,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 				if(pch!=NULL)
 				{
 					*pch='/0';
-                     strcat(stred, pch+strelen(bufff);	
+                     strcat(stred, pch+strelen(bufff));	
                      printk(KERN_INFO "Deleted"); 					
 				}
 	/*		  if(pch != NULL)
@@ -150,14 +154,17 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	else 
 		 printk(KERN_WARNING "The string should not have more than 100 characters");
 
-	
+
 	return length;
+}
+
 }
 
 ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_t *offset)
 	
 {
 	int ret;
+	int endRead, pos;
 	char buff[BUFF_SIZE];
 	long int len=0;
 	if (endRead){
