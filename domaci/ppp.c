@@ -19,6 +19,7 @@ static struct class *my_class;
 static struct device *my_device;
 static struct cdev *my_cdev;
 char stred[100];
+int endRead = 0; 
 
 
 
@@ -56,8 +57,8 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	char bufff[100];
 	int ret;
 	int j=0;
-	int position, value, rem;
-	int duzina, duz;
+	//int position, value, rem;
+	//int duzina, duz;
 	char str1[90];
 
 	ret = copy_from_user(buff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
@@ -118,11 +119,11 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	        bufff[length-1] = '\0'; 
 			
 			char *pch;
-			while (pch = strstr(stred, bufff)!='/0');
+			while (pch = strstr(stred, bufff)!='\0');
 		    {
 				if(pch!=NULL)
 				{
-					*pch='/0';
+					*pch='\0';
                      strcat(stred, pch+strlen(bufff));	
                      printk(KERN_INFO "Deleted"); 					
 				}
@@ -137,7 +138,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			    duzi=duzinaa-(strlen(buff)+1);
 			    if(position>duzi)
 			    {
-				  stred[strlen(stred)-valuee]='/0';
+				  stred[strlen(stred)-valuee]='\0';
 				  printk(KERN_INFO "Deleted"); 
 			    }
 			  
@@ -162,11 +163,11 @@ ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_
 	
 {
 	int ret;
-	int endRead, pos;
+	int pos;
 	char buff[BUFF_SIZE];
 	long int len=0;
 	if (endRead){
-		endRead = 0;            //signalizira da se doslo do krajnjeg elementa
+         endRead = 0;   //signalizira da se doslo do krajnjeg elementa
 		pos = 0;                //pokazuje element na koji se treba vratiti u trenutnom pozivu cat komande
 		//printk(KERN_INFO ​"Succesfully read from file\n"​);
 		return 0;
@@ -259,13 +260,14 @@ static int __init stred_init(void)
    return -1;
 }
 
-static int __exit stred_exit(void)
+static void __exit stred_exit(void)
 {
    cdev_del(my_cdev);
    device_destroy(my_class, my_dev_id);
    class_destroy(my_class);
    unregister_chrdev_region(my_dev_id,1);
    printk(KERN_INFO "Goodbye, cruel world\n");
+   
 }
 
 
