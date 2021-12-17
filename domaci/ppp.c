@@ -18,40 +18,40 @@ dev_t my_dev_id;
 static struct class *my_class;
 static struct device *my_device;
 static struct cdev *my_cdev;
-char stred[100];
+char ppp[100];
 int endRead = 0; 
 
 
 
-int stred_open(struct inode *pinode, struct file *pfile);
-int stred_close(struct inode *pinode, struct file *pfile);
-ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_t *offset);
-ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length, loff_t *offset);
+int ppp_open(struct inode *pinode, struct file *pfile);
+int ppp_close(struct inode *pinode, struct file *pfile);
+ssize_t ppp_read(struct file *pfile, char __user *buffer, size_t length, loff_t *offset);
+ssize_t ppp_write(struct file *pfile, const char __user *buffer, size_t length, loff_t *offset);
 
 struct file_operations my_fops =
 {
 	.owner = THIS_MODULE,
-	.open = stred_open,
-	.read = stred_read,
-	.write = stred_write,
-	.release = stred_close,
+	.open = ppp_open,
+	.read = ppp_read,
+	.write = ppp_write,
+	.release = ppp_close,
 };
 
 
-int stred_open(struct inode *pinode, struct file *pfile) 
+int ppp_open(struct inode *pinode, struct file *pfile) 
 {
 		printk(KERN_INFO "Succesfully opened stred\n");
 		return 0;
 }
 
-int stred_close(struct inode *pinode, struct file *pfile) 
+int ppp_close(struct inode *pinode, struct file *pfile) 
 {
 		printk(KERN_INFO "Succesfully closed stred\n");
 		return 0;
 }
 
 
-ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length, loff_t *offset) 
+ssize_t ppp_write(struct file *pfile, const char __user *buffer, size_t length, loff_t *offset) 
 {
 	char buff[BUFF_SIZE];
 	char bufff[100];
@@ -72,7 +72,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
     {                               //upis stringa  //strcmp — Compare two strings  //int strcmp (	const char * cs, const char * ct);
         if(strncmp(buff, "string=", 7)==0)   //poredi dva stringa za 7 karaktera (max broj karaktera) 
 		{                                     //ako je to ispisano, kopiraj string                          
-			strcpy(stred, (buff+7));                 //iz kernela u stred
+			strcpy(ppp, (buff+7));                 //iz kernela u stred
 			printk(KERN_WARNING "Succesfully wrote string\n");
 		}
                                                                          //clear
@@ -80,13 +80,13 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 		{
 			printk(KERN_WARNING "Deleting string\n");
 			for(j=0; j<100; j++)
-				stred[j]=0;              
+				ppp[j]=0;              
 		}
 		
 		else if(strcmp(buff, "append=Ovo je string koji se dodaje")==0)
 		{
 			strcpy(str1, buff);
-			strcat(stred, str1);
+			strcat(ppp, str1);
 			printk(KERN_WARNING "Succesfully concatenated strings\n");
 		}
 		
@@ -96,11 +96,11 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			ret=sscanf(buff, "%d,%d", &value,&position);
 			if(ret==2)
 			{
-			  duzina=strlen(stred);
+			  duzina=strlen(ppp);
 			  duz=duzina-6;
 			  if(position>duz)
 			  {
-				  stred[strlen(stred)-value]='\0';
+				  ppp[strlen(ppp)-value]='\0';
 				  printk(KERN_INFO "Succesfully deleted 5 end characters"); 
 			  }
 			  
@@ -119,12 +119,12 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	        bufff[length-1] = '\0'; 
 			
 			char *pch;
-			while (pch = strstr(stred, bufff));
+			while (pch = strstr(ppp, bufff));
 		    {
 				if(pch!=NULL)
 				{
 					*pch='\0';
-                     strcat(stred, pch+strlen(bufff));	
+                     strcat(ppp, pch+strlen(bufff));	
                      printk(KERN_INFO "Deleted"); 					
 				}
 			}
@@ -159,7 +159,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 
 }
 
-ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_t *offset)
+ssize_t ppp_read(struct file *pfile, char __user *buffer, size_t length, loff_t *offset)
 	
 {
 	int ret;
@@ -173,9 +173,9 @@ ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_
 		return 0;
     }
 	
-    char stred[100];
-	strcpy(buff, stred);     //kopira stred u buff
-	ret = copy_to_user(buffer, stred, strlen(stred));  //niz stred se kopira u niz buffer 
+ 
+	strcpy(buff, ppp);     //kopira stred u buff
+	ret = copy_to_user(buffer, ppp, strlen(stred));  //niz stred se kopira u niz buffer 
 	if(ret)                                            //strlen racuna duzinu stringa
 	{
 		return -EFAULT;
@@ -184,7 +184,7 @@ ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_
 	endRead=1;
     	for(pos=0; pos<100; pos++)
 		{
-			len = scnprintf(buff, BUFF_SIZE, "%c ", stred[pos]);
+			len = scnprintf(buff, BUFF_SIZE, "%c ", ppp[pos]);
 			ret = copy_to_user(buffer, buff,len);
 			if(ret)
 				return -EFAULT;
@@ -200,20 +200,20 @@ ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_
 			printk(KERN_WARNING "Lifo is empty\n"); 
 	    }
 
-	  return strlen(stred);
+	  return strlen(ppp);
 }
 
 
-static int __init stred_init(void)
+static int __init ppp_init(void)
 {
    int ret = 0;
    int i=0;
                             
 	//Initialize array
-   for (i=0; i<100; i++) stred[i] = 0;
+   for (i=0; i<100; i++) ppp[i] = 0;
 	
 
-   ret = alloc_chrdev_region(&my_dev_id, 0, 1, "stred");
+   ret = alloc_chrdev_region(&my_dev_id, 0, 1, "ppp");
    if (ret)
    {
       printk(KERN_ERR "failed to register char device\n");
@@ -221,7 +221,7 @@ static int __init stred_init(void)
    }
    printk(KERN_INFO "char device region allocated\n");
 
-   my_class = class_create(THIS_MODULE, "stred_class");
+   my_class = class_create(THIS_MODULE, "ppp_class");
    if (my_class == NULL)
    {
       printk(KERN_ERR "failed to create class\n");
@@ -229,7 +229,7 @@ static int __init stred_init(void)
    }
    printk(KERN_INFO "class created\n");
    
-   my_device = device_create(my_class, NULL, my_dev_id, NULL, "stred");
+   my_device = device_create(my_class, NULL, my_dev_id, NULL, "ppp");
 	if (my_device == NULL)
 	{
       printk(KERN_ERR "failed to create device\n");
@@ -260,7 +260,7 @@ static int __init stred_init(void)
    return -1;
 }
 
-static void __exit stred_exit(void)
+static void __exit ppp_exit(void)
 {
    cdev_del(my_cdev);
    device_destroy(my_class, my_dev_id);
@@ -271,5 +271,5 @@ static void __exit stred_exit(void)
 }
 
 
-module_init(stred_init);
-module_exit(stred_exit);
+module_init(ppp_init);
+module_exit(ppp_exit);
