@@ -40,13 +40,13 @@ struct file_operations my_fops =
 
 int ppp_open(struct inode *pinode, struct file *pfile) 
 {
-		printk(KERN_INFO "Succesfully opened stred\n");
+		printk(KERN_INFO "Succesfully opened ppp\n");
 		return 0;
 }
 
 int ppp_close(struct inode *pinode, struct file *pfile) 
 {
-		printk(KERN_INFO "Succesfully closed stred\n");
+		printk(KERN_INFO "Succesfully closed ppp\n");
 		return 0;
 }
 
@@ -72,7 +72,7 @@ ssize_t ppp_write(struct file *pfile, const char __user *buffer, size_t length, 
     {                               //upis stringa  //strcmp — Compare two strings  //int strcmp (	const char * cs, const char * ct);
         if(strncmp(buff, "string=", 7)==0)   //poredi dva stringa za 7 karaktera (max broj karaktera) 
 		{                                     //ako je to ispisano, kopiraj string                          
-			strcpy(ppp, (buff+7));                 //iz kernela u stred
+			strcpy(ppp, (buff+7));                 //iz kernela u ppp
 			printk(KERN_WARNING "Succesfully wrote string\n");
 		}
                                                                          //clear
@@ -134,11 +134,11 @@ ssize_t ppp_write(struct file *pfile, const char __user *buffer, size_t length, 
 				ret=sscanf(bufff, "%d,%d", &valuee,&positionn);
 			    if(ret==2)
 			  {
-			    duzinaa=strlen(stred);
+			    duzinaa=strlen(ppp);
 			    duzi=duzinaa-(strlen(buff)+1);
 			    if(position>duzi)
 			    {
-				  stred[strlen(stred)-valuee]='\0';
+				  ppp[strlen(ppp)-valuee]='\0';
 				  printk(KERN_INFO "Deleted"); 
 			    }
 			  
@@ -174,8 +174,8 @@ ssize_t ppp_read(struct file *pfile, char __user *buffer, size_t length, loff_t 
     }
 	
  
-	strcpy(buff, ppp);     //kopira stred u buff
-	ret = copy_to_user(buffer, ppp, strlen(stred));  //niz stred se kopira u niz buffer 
+	strcpy(buff, ppp);     //kopira ppp u buff
+	ret = copy_to_user(buffer, ppp, strlen(ppp));  //niz ppp se kopira u niz buffer 
 	if(ret)                                            //strlen racuna duzinu stringa
 	{
 		return -EFAULT;
