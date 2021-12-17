@@ -20,6 +20,7 @@ static struct cdev *my_cdev;
 char stred[100];
 
 
+
 int stred_open(struct inode *pinode, struct file *pfile);
 int stred_close(struct inode *pinode, struct file *pfile);
 ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_t *offset);
@@ -55,6 +56,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 	int j=0;
 	int position, value, rem;
 	int duzina, duz;
+	char str1[90];
 
 	ret = copy_from_user(buff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
 	if(ret)
@@ -65,7 +67,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 		
     if(length<110)
     {                               //upis stringa  //strcmp — Compare two strings  //int strcmp (	const char * cs, const char * ct);
-        if(strncmp(buff, "string=")==0)   //poredi dva stringa za 7 karaktera (max broj karaktera) 
+        if(strncmp(buff, "string=", 7)==0)   //poredi dva stringa za 7 karaktera (max broj karaktera) 
 		{                                     //ako je to ispisano, kopiraj string                          
 			strcpy(stred, (buff+7));                 //iz kernela u stred
 			printk(KERN_WARNING "Succesfully wrote string\n");
@@ -102,7 +104,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 			}
 		}
 		
-		else if(strcmp(buff, "remove="))==0
+		else if(strcmp(buff, "remove=")==0)
 		{
 			int valuee, positionn,dezi, duzinaa;
 			puts("Koji string hoces da obrises?");
@@ -183,7 +185,7 @@ ssize_t stred_read(struct file *pfile, char __user *buffer, size_t length, loff_
 		}
 		if(pos==100)
 		{
-			printk(KERN_INFO ​"Succesfully read from file\n"​);
+		//	printk(KERN_INFO ​"Succesfully read from file\n"​);
 			endRead = 1;
 		
 		}
@@ -252,7 +254,7 @@ static int __init stred_init(void)
    return -1;
 }
 
-static void __exit stred_exit(void)
+static int __exit stred_exit(void)
 {
    cdev_del(my_cdev);
    device_destroy(my_class, my_dev_id);
