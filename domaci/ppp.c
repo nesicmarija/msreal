@@ -9,8 +9,7 @@
 #include <linux/uaccess.h>
 #include <linux/errno.h>
 #include <linux/device.h>
-#include <stdlib.h>
-#include <unistd.h>
+
 #define BUFF_SIZE 200
 
 MODULE_LICENSE("Dual BSD/GPL");
@@ -110,7 +109,7 @@ ssize_t stred_write(struct file *pfile, const char __user *buffer, size_t length
 		else if(strcmp(buff, "remove=")==0)
 		{
 			int valuee, positionn,dezi, duzinaa;
-			puts("Koji string hoces da obrises?");
+			printk(KERN_INFO "Koji string zelis da obrises?\n");
 			//uporedim
 			ret = copy_from_user(bufff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
 	        if(ret)
