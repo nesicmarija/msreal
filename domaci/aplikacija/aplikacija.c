@@ -17,12 +17,22 @@ void menu()
       puts("Q: aplikacija se terminira");
 }
 
-void fopen()
+void ffopenread()
 {
-  fp = ffopen("/dev/led", "w");  
+  fp = fopen("/dev/ppp", "r");  
 		if(fp == NULL)
 		{
-			printf("Problem pri otvaranju /dev/led\n");  
+			printf("Problem pri otvaranju /dev/ppp");  
+			return -1;                     
+		}
+}
+
+void ffopenwrite()
+{
+  fp = fopen("/dev/ppp", "w");  
+		if(fp == NULL)
+		{
+			printf("Problem pri otvaranju /dev/ppp");  
 			return -1;                     
 		}
 }
@@ -31,7 +41,7 @@ void ffclose()
 {
                 if(fclose(fp))  //posto je zavrseno sa citanjem fajl se zatvara
 		{
-			puts("Problem pri zatvaranju /dev/button");
+			puts("Problem pri zatvaranju /dev/ppp");
 			return -1;
 		}
 }
@@ -49,42 +59,42 @@ int main()
         
           switch(opcija)
           {
-            case '1': ffopen();
+            case '1': ffopenread();
                       fscanf(fp, "%s", string);
-                      printf("^s/n", string);
+                      printf("^s\n", string);
                       ffclose();
                       break;
             case '2': puts("Upiši novi string");
                       scanf("%s", string);
-                      ffopen();
-                      fprintf(fp, "string=%s/n", string);
+                      ffopenwrite();
+                      fprintf(fp, "string=%s\n", string);
                       ffclose();
                       break;
             case '3': puts("Unesi string koji treba da se konkatanira");
                       scanf("%s",string);
-                      ffopen();
-                      fprintf(fp, "append=%s/n", string);
+                      ffopenwrite();
+                      fprintf(fp, "append=%s\n", string);
                       ffclose();
                       break;
-            case '4': ffopen();
-                      fprintf(fp, "clear/n");
+            case '4': ffopenwrite();
+                      fprintf(fp, "clear\n");
                       ffclose();
                       break;
-          /*  case '5': ffopen();
-                      fprintf(fp, "shrink/n");
+            case '5': ffopenwrite();
+                      fprintf(fp, "shrink\n");
                       ffclose();
-            */          break;
+                      break;
             case '6': puts("Unesi string koji treba da se ukloni");
                       scanf("%s",string);
-                      ffopen();
-                      fprintf(fp, "remove=%s/n", string);
+                      ffopenwrite();
+                      fprintf(fp, "remove=%s\n", string);
                       ffclose();
                       break;
             case '7': puts("Koliko karaktera ima string?");
                       scanf("%s",string);
                       i=atoi(string);
-                      ffopen();
-                      fprintf(fp, "truncate=%d/n", i);
+                      ffopenwrite();
+                      fprintf(fp, "truncate=%d\n", i);
                       ffclose();
                       break;
 					  */

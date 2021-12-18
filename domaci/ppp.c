@@ -151,10 +151,23 @@ ssize_t ppp_write(struct file *pfile, const char __user *buffer, size_t length, 
 			}
 		}
 		
+		else if(strcmp(buff, "shrink")==0)
+		{
+			shrrink = strim(ppp);  
+			s=0;
+			while(ppp[s] != '\0')
+			{
+				ppp[s]=(*(shrrink+s));
+				s++;
+			}
+			ppp[s]='\0';
+			printk(KERN_WARNING "Succesfully deleted spaces\n");
+		}
+		
 		else if(strcmp(buff, "remove=")==0)
 		{
 			//int valuee, positionn,dezi, duzinaa;
-			printk(KERN_INFO "Koji string zelis da obrises?\n");
+			printk(KERN_INFO "Which string would you like to remove?\n");
 			//uporedim
 			ret = copy_from_user(bufff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
 	        if(ret)
@@ -172,6 +185,8 @@ ssize_t ppp_write(struct file *pfile, const char __user *buffer, size_t length, 
                      printk(KERN_INFO "Deleted"); 					
 				}
 			}
+			
+			printk(KERN_WARNING "Succesfully removed\n");
 	/*		  if(pch != NULL)
 			  {
 		        memmove(pch+strlen(bufff), pch, strlen(buff));
