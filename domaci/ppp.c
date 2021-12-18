@@ -104,6 +104,8 @@ ssize_t ppp_write(struct file *pfile, const char __user *buffer, size_t length, 
 	int position, value;
 	int duzina, duz;
 	char str1[90];
+	char *shrrink;
+	int s;
 
 	ret = copy_from_user(buff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
 	if(ret)
