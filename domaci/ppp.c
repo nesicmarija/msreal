@@ -109,7 +109,7 @@ ssize_t ppp_write(struct file *pfile, const char __user *buffer, size_t length, 
 
 	ret = copy_from_user(buff, buffer, length);  //kopiramo iz niza buffer u niz buff (kernel prostor)
 	if(ret)
-		return -EFAULT;
+	  return -EFAULT;
 	
 	buff[length-1] = '\0';  //kako bismo mogli koristiti niz karakter buff kao string u pomocnim f-jama
 	
