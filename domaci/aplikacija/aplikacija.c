@@ -8,7 +8,7 @@ char *str;
 void menu()
 {    //ispis jednostavnih poruka na stdout
       puts("1: Pročitaj trenutno stanje stringa");
-      puts("2: Upiši novi string"):
+      puts("2: Upiši novi string");
       puts("3: Konkataniraj string na trenutni");
       puts("4: Izbriši čitav string");
       puts("5: Izbriši vodeće i prateće space karaktere");
