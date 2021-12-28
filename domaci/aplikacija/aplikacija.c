@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-FILE *fp
-char *str
+FILE *fp;
+char *str;
 
 void menu()
 {    //ispis jednostavnih poruka na stdout
@@ -97,7 +97,7 @@ int main()
                       fprintf(fp, "truncate=%d\n", i);
                       ffclose();
                       break;
-					  */
+					 
             case 'Q': puts("Game over");
                         exit(0);
                         break;
